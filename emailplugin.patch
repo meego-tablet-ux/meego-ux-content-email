@@ -1,0 +1,54 @@
+diff --git a/emailplugin.cpp b/emailplugin.cpp
+index 71fa23f..8071026 100644
+--- a/emailplugin.cpp
++++ b/emailplugin.cpp
+@@ -21,17 +21,12 @@ EmailPlugin::~EmailPlugin()
+ {
+ }
+ 
+-McaServiceModel *EmailPlugin::serviceModel()
++QAbstractItemModel *EmailPlugin::serviceModel()
+ {
+     return m_serviceModel;
+ }
+ 
+-int EmailPlugin::capabilityFlags()
+-{
+-    return PluginSupportsFeeds;
+-}
+-
+-McaFeedModel *EmailPlugin::createFeedModel(const QString& service)
++QAbstractItemModel *EmailPlugin::createFeedModel(const QString& service)
+ {
+     qDebug() << "EmailPlugin::createFeedModel: " << service;
+ 
+@@ -39,7 +34,7 @@ McaFeedModel *EmailPlugin::createFeedModel(const QString& service)
+     return new EmailFeedModel(this);
+ }
+ 
+-McaFeedModel *EmailPlugin::createSearchModel(const QString& service,
++McaSearchableFeed *EmailPlugin::createSearchModel(const QString& service,
+                                              const QString& searchText)
+ {
+     qDebug() << "EmailPlugin::createSearchModel: " << service << searchText;
+diff --git a/emailplugin.h b/emailplugin.h
+index ac7b9c0..723575c 100644
+--- a/emailplugin.h
++++ b/emailplugin.h
+@@ -23,12 +23,10 @@ public:
+     explicit EmailPlugin(QObject *parent = NULL);
+     ~EmailPlugin();
+ 
+-    int capabilityFlags();
+-
+-    McaServiceModel *serviceModel();
+-    McaFeedModel *createFeedModel(const QString& service);
+-    McaFeedModel *createSearchModel(const QString& service,
+-                                    const QString& searchText);
++    QAbstractItemModel *serviceModel();
++    QAbstractItemModel *createFeedModel(const QString& service);
++    McaSearchableFeed *createSearchModel(const QString& service,
++                                         const QString& searchText);
+ 
+ private:
+     EmailServiceModel *m_serviceModel;
